@@ -18,3 +18,4 @@ It's a SideBar App.
     ![](image/1.png)
 4. Take walk with him! Send heart to him.
     ![](image/2.png)
+5. If you press `q` when you're still, the zep will responds.
