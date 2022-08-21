@@ -151,15 +151,20 @@ ScriptApp.onUpdate.Add(function (dt) {
       for (let i in _players) {
         let p = _players[i];
 
+
+
+        
+
         if(p.tag.hide) {ScriptMap.putObject(p.tileX, p.tileY, null);} 
         else {
+            ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null)
+
             if (
                 p.tag.previousX !== p.tileX ||
                 p.tag.previousY !== p.tileY ||
                 p.tag.previousDir !== p.dir
             ) {
                 if (p.tag.previousDir % 4 === 1) {
-                    ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
                     ScriptMap.putObject(p.tag.previousX, p.tag.previousY, left_ani, {
                         overlap: true,
                         moveSpeed: 80,
@@ -169,7 +174,6 @@ ScriptApp.onUpdate.Add(function (dt) {
                 }
 
                 if (p.tag.previousDir % 4 === 2) {
-                    ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
                     ScriptMap.putObject(p.tag.previousX, p.tag.previousY, up_ani, {
                         overlap: true,
                         moveSpeed: 80,
@@ -179,7 +183,6 @@ ScriptApp.onUpdate.Add(function (dt) {
                 }
 
                 if (p.tag.previousDir % 4 === 3) {
-                    ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
                     ScriptMap.putObject(p.tag.previousX, p.tag.previousY, right_ani, {
                         overlap: true,
                         moveSpeed: 80,
@@ -189,7 +192,6 @@ ScriptApp.onUpdate.Add(function (dt) {
                 }
 
                 if (p.tag.previousDir % 4 === 0) {
-                    ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
                     ScriptMap.putObject(p.tag.previousX, p.tag.previousY, down_ani, {
                     overlap: true,
                     moveSpeed: 80,
@@ -202,12 +204,22 @@ ScriptApp.onUpdate.Add(function (dt) {
                 p.tag.previousY = p.tileY;
                 p.tag.previousDir = p.dir;
             } else {
-                ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
                 ScriptMap.putObject(p.tag.previousX, p.tag.previousY, sit_ani, {
                     overlap: true,
-                    moveSpeed: 80,
                 });
+
+                ScriptApp.addOnKeyDown(81, function(){
+                    ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null)
+                    ScriptMap.putObject(p.tag.previousX, p.tag.previousY, zzz_ani, {
+                        overlap: true});
+                    ScriptMap.playObjectAnimation(p.tag.previousX, p.tag.previousY, "#" + zzz_ani.id, 10);
+                })
+        
+
             }
+
+
+            
         }
         p.sendUpdated();
       }
@@ -231,7 +243,6 @@ ScriptApp.onSidebarTouched.Add(function (p) {
   p.tag.widget = p.showWidget("index.html", "sidebar", 300, 510);
 
   p.tag.widget.onMessage.Add(function (player: ScriptPlayer, data: ChildMessage) {
-    ScriptApp.sayToAll(JSON.stringify(data));
     switch (data.type) {
       case "initialize":
         ScriptApp.httpGet(`${API}/zepep/my/?user_id=${"Regulus"}`, null, (response) => {
@@ -240,7 +251,6 @@ ScriptApp.onSidebarTouched.Add(function (p) {
             type: data.type,
             data: JSON.parse(response),
           });
-          ScriptApp.sayToAll(JSON.stringify(response));
         });
         break;
       case "close":
@@ -262,7 +272,6 @@ ScriptApp.onSidebarTouched.Add(function (p) {
               type: "updateFriendship",
               data: JSON.parse(response),
             });
-            ScriptApp.sayToAll(JSON.stringify(response));
           }
         );
         break;
