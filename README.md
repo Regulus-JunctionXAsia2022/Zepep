@@ -19,3 +19,9 @@ It's a SideBar App.
 4. Take walk with him! Send heart to him.
     ![](image/2.png)
 5. If you press `q` when you're still, the zep will responds.
+
+
+## Related Respository
+
+- Backend Sever : <https://github.com/Regulus-JunctionXAsia2022/zepep_backend>
+- Widget : <https://github.com/Regulus-JunctionXAsia2022/Widget>
