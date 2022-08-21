@@ -1,2 +1,5 @@
-dist
 node_modules
+Zepep.zepapp/
+Zepep.zepapp.zip
+
+.DS_Store
