@@ -36,4 +36,4 @@ It's a SideBar App.
 ## Related Respository
 
 - Backend Sever : <https://github.com/Regulus-JunctionXAsia2022/zepep_backend>
-- Widget : <https://github.com/Regulus-JunctionXAsia2022/Widget>
+- React App for Widget : <https://github.com/Regulus-JunctionXAsia2022/Widget>
