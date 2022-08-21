@@ -16,7 +16,8 @@ export type ChildMessage =
   | { type: "close" }
   | { type: "initialize" }
   | { type: "show" }
-  | { type: "hide" };
+  | { type: "hide" }
+  | { type: "checkHide" };
 
 // delay number
 const STATE_INIT = 3000;
@@ -263,6 +264,15 @@ ScriptApp.onSidebarTouched.Add(function (p) {
       case "show":
         break;
       case "hide":
+        break;
+      case "checkHide":
+        player.tag.widget.sendMessage({
+          result: "success",
+          type: "checkHide",
+          data: {
+            hide: player.tag.hide,
+          },
+        });
         break;
       default:
         break;
