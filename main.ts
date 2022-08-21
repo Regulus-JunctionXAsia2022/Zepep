@@ -5,6 +5,9 @@
 import "zep-script";
 import { ScriptPlayer } from "zep-script";
 
+// API
+const API = "https://port-0-zepep-backend-13082024l71h3zsw.gksl1.cloudtype.app/api/v1";
+
 // type
 export type ChildMessage =
   | {
@@ -108,6 +111,7 @@ ScriptApp.onJoinPlayer.Add(function (player) {
       previousY: p.tileY,
       previousDir: p.dir,
       widget: null,
+      hide: false,
     };
   }
 
@@ -146,60 +150,64 @@ ScriptApp.onUpdate.Add(function (dt) {
       for (let i in _players) {
         let p = _players[i];
 
-        if (
-          p.tag.previousX !== p.tileX ||
-          p.tag.previousY !== p.tileY ||
-          p.tag.previousDir !== p.dir
-        ) {
-          if (p.tag.previousDir % 4 === 1) {
-            ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
-            ScriptMap.putObject(p.tag.previousX, p.tag.previousY, left_ani, {
-              overlap: true,
-              moveSpeed: 80,
-            });
-            ScriptMap.playObjectAnimation(p.tag.previousX, p.tag.previousY, "#" + left_ani.id, -1);
-            ScriptMap.moveObject(p.tag.previousX, p.tag.previousY, p.tileX, p.tileY, 0.3);
-          }
+        if(!p.tag.hide) {
+            if (
+                p.tag.previousX !== p.tileX ||
+                p.tag.previousY !== p.tileY ||
+                p.tag.previousDir !== p.dir
+            ) {
+                if (p.tag.previousDir % 4 === 1) {
+                    ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
+                    ScriptMap.putObject(p.tag.previousX, p.tag.previousY, left_ani, {
+                    overlap: true,
+                    moveSpeed: 80,
+                    });
+                    ScriptMap.playObjectAnimation(p.tag.previousX, p.tag.previousY, "#" + left_ani.id, -1);
+                    ScriptMap.moveObject(p.tag.previousX, p.tag.previousY, p.tileX, p.tileY, 0.3);
+                }
 
-          if (p.tag.previousDir % 4 === 2) {
-            ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
-            ScriptMap.putObject(p.tag.previousX, p.tag.previousY, up_ani, {
-              overlap: true,
-              moveSpeed: 80,
-            });
-            ScriptMap.playObjectAnimation(p.tag.previousX, p.tag.previousY, "#" + up_ani.id, -1);
-            ScriptMap.moveObject(p.tag.previousX, p.tag.previousY, p.tileX, p.tileY, 0.3);
-          }
+                if (p.tag.previousDir % 4 === 2) {
+                    ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
+                    ScriptMap.putObject(p.tag.previousX, p.tag.previousY, up_ani, {
+                    overlap: true,
+                    moveSpeed: 80,
+                    });
+                    ScriptMap.playObjectAnimation(p.tag.previousX, p.tag.previousY, "#" + up_ani.id, -1);
+                    ScriptMap.moveObject(p.tag.previousX, p.tag.previousY, p.tileX, p.tileY, 0.3);
+                }
 
-          if (p.tag.previousDir % 4 === 3) {
-            ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
-            ScriptMap.putObject(p.tag.previousX, p.tag.previousY, right_ani, {
-              overlap: true,
-              moveSpeed: 80,
-            });
-            ScriptMap.playObjectAnimation(p.tag.previousX, p.tag.previousY, "#" + right_ani.id, -1);
-            ScriptMap.moveObject(p.tag.previousX, p.tag.previousY, p.tileX, p.tileY, 0.3);
-          }
+                if (p.tag.previousDir % 4 === 3) {
+                    ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
+                    ScriptMap.putObject(p.tag.previousX, p.tag.previousY, right_ani, {
+                    overlap: true,
+                    moveSpeed: 80,
+                    });
+                    ScriptMap.playObjectAnimation(p.tag.previousX, p.tag.previousY, "#" + right_ani.id, -1);
+                    ScriptMap.moveObject(p.tag.previousX, p.tag.previousY, p.tileX, p.tileY, 0.3);
+                }
 
-          if (p.tag.previousDir % 4 === 0) {
-            ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
-            ScriptMap.putObject(p.tag.previousX, p.tag.previousY, down_ani, {
-              overlap: true,
-              moveSpeed: 80,
-            });
-            ScriptMap.playObjectAnimation(p.tag.previousX, p.tag.previousY, "#" + down_ani.id, -1);
-            ScriptMap.moveObject(p.tag.previousX, p.tag.previousY, p.tileX, p.tileY, 0.3);
-          }
+                if (p.tag.previousDir % 4 === 0) {
+                    ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
+                    ScriptMap.putObject(p.tag.previousX, p.tag.previousY, down_ani, {
+                    overlap: true,
+                    moveSpeed: 80,
+                    });
+                    ScriptMap.playObjectAnimation(p.tag.previousX, p.tag.previousY, "#" + down_ani.id, -1);
+                    ScriptMap.moveObject(p.tag.previousX, p.tag.previousY, p.tileX, p.tileY, 0.3);
+                }
 
-          p.tag.previousX = p.tileX;
-          p.tag.previousY = p.tileY;
-          p.tag.previousDir = p.dir;
+                p.tag.previousX = p.tileX;
+                p.tag.previousY = p.tileY;
+                p.tag.previousDir = p.dir;
+            } else {
+                ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
+                ScriptMap.putObject(p.tag.previousX, p.tag.previousY, sit_ani, {
+                    overlap: true,
+                    moveSpeed: 80,
+                });
+            }
         } else {
-          ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
-          ScriptMap.putObject(p.tag.previousX, p.tag.previousY, sit_ani, {
-            overlap: true,
-            moveSpeed: 80,
-          });
+            ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
         }
         p.sendUpdated();
       }
@@ -217,8 +225,6 @@ ScriptApp.onDestroy.Add(function () {
 
   ScriptMap.clearAllObjects();
 });
-
-const API = "https://port-0-zepep-backend-13082024l71h3zsw.gksl1.cloudtype.app/api/v1";
 
 // 사이드바 앱이 터치(클릭)되었을 때 동작하는 함수
 ScriptApp.onSidebarTouched.Add(function (p) {
