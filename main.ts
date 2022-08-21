@@ -112,7 +112,7 @@ ScriptApp.onJoinPlayer.Add(function (player) {
       previousY: p.tileY,
       previousDir: p.dir,
       widget: null,
-      hide: false,
+      hide: true,
     };
   }
 
@@ -151,7 +151,8 @@ ScriptApp.onUpdate.Add(function (dt) {
       for (let i in _players) {
         let p = _players[i];
 
-        if(!p.tag.hide) {
+        if(p.tag.hide) {ScriptMap.putObject(p.tileX, p.tileY, null);} 
+        else {
             if (
                 p.tag.previousX !== p.tileX ||
                 p.tag.previousY !== p.tileY ||
@@ -160,8 +161,8 @@ ScriptApp.onUpdate.Add(function (dt) {
                 if (p.tag.previousDir % 4 === 1) {
                     ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
                     ScriptMap.putObject(p.tag.previousX, p.tag.previousY, left_ani, {
-                    overlap: true,
-                    moveSpeed: 80,
+                        overlap: true,
+                        moveSpeed: 80,
                     });
                     ScriptMap.playObjectAnimation(p.tag.previousX, p.tag.previousY, "#" + left_ani.id, -1);
                     ScriptMap.moveObject(p.tag.previousX, p.tag.previousY, p.tileX, p.tileY, 0.3);
@@ -170,8 +171,8 @@ ScriptApp.onUpdate.Add(function (dt) {
                 if (p.tag.previousDir % 4 === 2) {
                     ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
                     ScriptMap.putObject(p.tag.previousX, p.tag.previousY, up_ani, {
-                    overlap: true,
-                    moveSpeed: 80,
+                        overlap: true,
+                        moveSpeed: 80,
                     });
                     ScriptMap.playObjectAnimation(p.tag.previousX, p.tag.previousY, "#" + up_ani.id, -1);
                     ScriptMap.moveObject(p.tag.previousX, p.tag.previousY, p.tileX, p.tileY, 0.3);
@@ -180,8 +181,8 @@ ScriptApp.onUpdate.Add(function (dt) {
                 if (p.tag.previousDir % 4 === 3) {
                     ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
                     ScriptMap.putObject(p.tag.previousX, p.tag.previousY, right_ani, {
-                    overlap: true,
-                    moveSpeed: 80,
+                        overlap: true,
+                        moveSpeed: 80,
                     });
                     ScriptMap.playObjectAnimation(p.tag.previousX, p.tag.previousY, "#" + right_ani.id, -1);
                     ScriptMap.moveObject(p.tag.previousX, p.tag.previousY, p.tileX, p.tileY, 0.3);
@@ -207,8 +208,6 @@ ScriptApp.onUpdate.Add(function (dt) {
                     moveSpeed: 80,
                 });
             }
-        } else {
-            ScriptMap.putObject(p.tag.previousX, p.tag.previousY, null);
         }
         p.sendUpdated();
       }
@@ -268,8 +267,10 @@ ScriptApp.onSidebarTouched.Add(function (p) {
         );
         break;
       case "show":
+        player.tag.hide = false;
         break;
       case "hide":
+        player.tag.hide = true;
         break;
       case "checkHide":
         player.tag.widget.sendMessage({
